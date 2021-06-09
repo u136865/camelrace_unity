@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class bola : MonoBehaviour
 {
-    public Transform pepito;
+    public GameObject pepito;
     Rigidbody _bola;
-    public float shootPower = 30f;
+    public float potenciadorDisparo = 5f;
     public bool agarrar = false;
     public Transform inicio;
-    private Vector3 mOffset, targetPos;
-    public float mZCoord,speed = 3.0f;
+    private Vector3 posInicio, posFinal;
+    float fuerzaDisparo = 3.0f;
 
     void Start()
     {
-        targetPos = transform.position;
         _bola = transform.GetComponent<Rigidbody>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (agarrar)
         {
@@ -32,47 +31,34 @@ public class bola : MonoBehaviour
              {
                  RaycastHit hit;
                  Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                 if (Physics.Raycast(ray, out hit, 1000f) && hit.transform.tag == "ZonaTiro")
+                 if (Physics.Raycast(ray, out hit) && hit.transform.tag == "ZonaTiro")
                  {
-                    Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward, Color.green);
-                    Debug.Log(hit.transform.tag);
-                    Debug.Log("Posicion de entrada: " + hit.transform.position);
-                    Instantiate(pepito, new Vector3(hit.transform.position.x, hit.transform.position.y, hit.transform.position.z), Quaternion.Euler(55, 90, 180));
+                    Debug.Log("Punto de entrada: " + hit.point);
+                    _bola.transform.position = hit.point;
+                    _bola.transform.rotation = Quaternion.Euler(0, 0, 35);
+                    posInicio = hit.point;
                  }
             }
-             if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0))
             {
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit, 1000f) && hit.transform.tag == "ZonaTiro")
+                if (Physics.Raycast(ray, out hit) && hit.transform.tag == "ZonaTiro")
                 {
-                    Debug.Log("Posicion de salida: " + hit.transform.position);
-                    Instantiate(pepito, new Vector3(hit.transform.position.x, hit.transform.position.y, hit.transform.position.z), Quaternion.Euler(55, 90, 180));
                     float distance = transform.position.z - Camera.main.transform.position.z;
-                     targetPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
-                     targetPos = Camera.main.ScreenToWorldPoint(targetPos);
-                    Vector3 direction = transform.position - targetPos;
-                     _bola.isKinematic = false;
-                     _bola.AddForce(direction * speed);
+                    posFinal = hit.point;
+                    Vector3 direction = posFinal - posInicio;                   
+                    fuerzaDisparo = Vector3.Distance(posInicio,posFinal);
+                    Debug.Log("Dirección: " + direction);
+                    Debug.Log("Fuerza disparo: " + fuerzaDisparo);
+                   // _bola.transform.rotation = Quaternion.Euler(0, direction.y, 35);
+                    _bola.isKinematic = false;
+                    _bola.AddForce(direction * fuerzaDisparo * potenciadorDisparo, ForceMode.Impulse);
                 }
-             }
+            }
         }
     }
 
-    void OnMouseDrag()
-        {
-            transform.position = GetMouseAsWorldPoint() + mOffset;
-        }
-
-    private Vector3 GetMouseAsWorldPoint()
-    {
-        // Pixel coordinates of mouse (x,y)
-        Vector3 mousePoint = Input.mousePosition;
-        // z coordinate of game object on screen
-        mousePoint.z = mZCoord;
-        // Convert it to world points
-        return Camera.main.ScreenToWorldPoint(mousePoint);
-    }
 
     void OnTriggerEnter(Collider col)
     {
