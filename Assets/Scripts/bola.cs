@@ -1,17 +1,17 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class bola : MonoBehaviour
+public class Bola : MonoBehaviour
 {
     Rigidbody _bola;
     public GameObject pepito;
     public float potenciadorDisparo = 5f;
     public bool agarrar = false;
-    public int puntos=0;
+    public int puntos = 0;
     public Transform inicio;
     public Vector3 posInicio, posFinal;
+    public Puntuacion puntuacion;
+
     [SerializeField]
     float fuerzaDisparo;
     [SerializeField]
@@ -27,7 +27,7 @@ public class bola : MonoBehaviour
     {
         _bola = transform.GetComponent<Rigidbody>();
     }
-    
+
     void Update()
     {
         if (agarrar)
@@ -39,22 +39,22 @@ public class bola : MonoBehaviour
 
         if (_bola.isKinematic)
         {
-            if (Input.GetMouseButtonDown(0)) 
-             {
+            if (Input.GetMouseButtonDown(0))
+            {
                 tiempoInicio = Time.time;
                 TimeSpan timeSpan = TimeSpan.FromSeconds(tiempoInicio);
                 string timeText = string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
-                 RaycastHit hit;
-                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                 if (Physics.Raycast(ray, out hit))
-                 {
-                    if(hit.transform.tag == "ZonaTiro")
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.transform.tag == "ZonaTiro")
                     {
                         _bola.transform.position = hit.point;
                         _bola.transform.rotation = Quaternion.Euler(0, 0, 35);
                         posInicio = hit.point;
                     }
-                 }
+                }
             }
             if (Input.GetMouseButtonUp(0))
             {
@@ -65,7 +65,7 @@ public class bola : MonoBehaviour
                     posFinal = hit.point;
                     Vector3 direction = posFinal - posInicio;
                     distanciaPuntos = direction.magnitude;
-                    fuerzaDisparo = (distanciaPuntos / (Time.time - tiempoInicio))/divisor;
+                    fuerzaDisparo = (distanciaPuntos / (Time.time - tiempoInicio)) / divisor;
                     _bola.isKinematic = false;
                     _bola.AddForce(direction * fuerzaDisparo, ForceMode.Impulse);
                 }
@@ -77,7 +77,7 @@ public class bola : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.tag == "ZonaRecogida")
+        if (col.gameObject.tag == "ZonaRecogida")
             agarrar = true;
         if (col.gameObject.tag == "ZonaExterior")
             agarrar = true;
