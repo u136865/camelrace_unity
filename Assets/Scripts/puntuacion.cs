@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class Puntuacion : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class Puntuacion : MonoBehaviour
 
     bool winner = false;
 
+
+    PhotonView view; //variable de Photon para saber de quién es el player
+
     void Start()
     {
         puntos.GetComponent<TextMeshProUGUI>().text = "0";
@@ -27,13 +31,17 @@ public class Puntuacion : MonoBehaviour
 
     private void Update()
     {
-        TiempoJuego();
-        MoverCamello();
-        puntos.GetComponent<TextMeshProUGUI>().text = total.ToString();
-        pt1.GetComponent<TextMeshProUGUI>().text = punt1.ToString();
-        pt2.GetComponent<TextMeshProUGUI>().text = punt2.ToString();
-        pt3.GetComponent<TextMeshProUGUI>().text = punt3.ToString();
-        camello.localPosition = new Vector3(camelloMovimiento, camello.localPosition.y, camello.localPosition.z);
+        if (view.IsMine) //Comprobamos que es nuestro el player
+        {
+            TiempoJuego();
+            MoverCamello();
+            puntos.GetComponent<TextMeshProUGUI>().text = total.ToString();
+            pt1.GetComponent<TextMeshProUGUI>().text = punt1.ToString();
+            pt2.GetComponent<TextMeshProUGUI>().text = punt2.ToString();
+            pt3.GetComponent<TextMeshProUGUI>().text = punt3.ToString();
+            camello.localPosition = new Vector3(camelloMovimiento, camello.localPosition.y, camello.localPosition.z);
+        }
+        
     }
     void TiempoJuego()
     {
