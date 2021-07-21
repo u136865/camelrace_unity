@@ -14,7 +14,7 @@ public class Puntuacion : MonoBehaviour
     public RectTransform[] camellos;
     RectTransform camello;
     public GameObject pantallaWin;
-
+    public float tiempoMovimiento = 10;
     float segundosTiempo = 0, camelloMovimiento = 450; //El camello va del 450 de x al -450 de x para llegar a la meta   
     float players;
     int minutosTiempo = 0;
@@ -44,7 +44,7 @@ public class Puntuacion : MonoBehaviour
             pt1.GetComponent<TextMeshProUGUI>().text = punt1.ToString();
             pt2.GetComponent<TextMeshProUGUI>().text = punt2.ToString();
             pt3.GetComponent<TextMeshProUGUI>().text = punt3.ToString();
-            camello.localPosition = new Vector3(camelloMovimiento, camello.localPosition.y, camello.localPosition.z);
+            camello.localPosition = Vector3.Lerp(camello.localPosition, new Vector3(camelloMovimiento, camello.localPosition.y, camello.localPosition.z), tiempoMovimiento);
         }        
     }
     void AsignarCamello()
