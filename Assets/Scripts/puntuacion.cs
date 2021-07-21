@@ -11,10 +11,12 @@ public class Puntuacion : MonoBehaviour
     public TMP_Text puntos, pt1, pt2, pt3, textTiempo, textTiempoFinal;
     public int total, punt1, punt2, punt3, totalMovimientoCamello;
     public int multiplicadorCamello = 3;
-    public RectTransform camello;
+    public RectTransform[] camellos;
+    RectTransform camello;
     public GameObject pantallaWin;
 
     float segundosTiempo = 0, camelloMovimiento = 450; //El camello va del 450 de x al -450 de x para llegar a la meta   
+    float players;
     int minutosTiempo = 0;
     //int horasTiempo = 0;
 
@@ -26,7 +28,8 @@ public class Puntuacion : MonoBehaviour
     void Start()
     {
         puntos.GetComponent<TextMeshProUGUI>().text = "0";
-        camello = camello.GetComponent<RectTransform>();
+        players = PhotonNetwork.CurrentRoom.PlayerCount;//Miramos a ver cuántos players hay en la sala
+        AsignarCamello();//asignamos el camello dependiendo el número de players
         view = transform.GetComponent<PhotonView>();
         bola = GameObject.Find("Player(Clone)").GetComponent<Bola>();
     }
@@ -43,6 +46,29 @@ public class Puntuacion : MonoBehaviour
             pt3.GetComponent<TextMeshProUGUI>().text = punt3.ToString();
             camello.localPosition = new Vector3(camelloMovimiento, camello.localPosition.y, camello.localPosition.z);
         }        
+    }
+    void AsignarCamello()
+    {
+        switch (players)
+        {
+            case 0:
+                camello = camellos[0];
+                break;
+            case 1:
+                camello = camellos[1];
+                break;
+            case 2:
+                camello = camellos[2];
+                break;
+            case 3:
+                camello = camellos[3];
+                break;
+            case 4:
+                camello = camellos[4];
+                break;
+            default:
+                break;
+        }
     }
 
     void TiempoJuego()

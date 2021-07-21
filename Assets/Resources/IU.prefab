@@ -2020,14 +2020,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
+  ObservedComponentsFoldoutOpen: 0
   Group: 0
   prefixField: -1
-  observableSearch: 2
   Synchronization: 3
   OwnershipTransfer: 0
-  ObservedComponents: []
-  viewIdField: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 0}
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &8574279821729531472
@@ -2054,7 +2055,12 @@ MonoBehaviour:
   punt3: 0
   totalMovimientoCamello: 0
   multiplicadorCamello: 100
-  camello: {fileID: 9054553706369226625}
+  camellos:
+  - {fileID: 8264067653318861478}
+  - {fileID: 1177777589760433321}
+  - {fileID: 7259462924790344164}
+  - {fileID: 1481683330167544405}
+  - {fileID: 9054553706369226625}
   pantallaWin: {fileID: 9054553704831474005}
 --- !u!1 &9054553705609057066
 GameObject:
