@@ -17,7 +17,7 @@ public class Puntuacion : MonoBehaviour
     public float tiempoMovimiento = 10;
     float segundosTiempo = 0, camelloMovimiento = 450; //El camello va del 450 de x al -450 de x para llegar a la meta   
     
-    int minutosTiempo = 0;
+    int minutosTiempo = 0;//Dudo mucho que se metan horas
     //int horasTiempo = 0;
 
     bool winner = false;
