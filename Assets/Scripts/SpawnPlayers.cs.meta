@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 873aa00ac7962dc4db8907241a5bffb1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - playerPrefab: {fileID: 4339256968013638913, guid: 8c71fd539f5634b4f9a7471252c8da61, type: 3}
+  - pt_value1: {fileID: 3807873374614541966, guid: cfecd65012583734797c52a6b999edb2, type: 3}
+  - pt_value2: {fileID: 7247718933617437840, guid: 6e48d1f274d90ef479126b8fb0e03b0e, type: 3}
+  - pt_value3: {fileID: 7211044554123689158, guid: 3f6b3677efa921c42bbcf67784062ff3, type: 3}
+  - puntos: {fileID: 3113906067231838074, guid: 1040a4a2185951f4ca7b220f686b008f, type: 3}
+  - reinicio: {fileID: 856723243728301075, guid: 4458c40728bf66d4280af5722401bcee, type: 3}
+  - CamelloAzul: {fileID: 158497511410849559, guid: dcbf77e1ac414d24bbc0bd39a8776be2, type: 3}
+  - CamelloMorado: {fileID: 2521247291721437548, guid: c11b832d2e1dde6438f4b5abf7a8d543, type: 3}
+  - CamelloRojo: {fileID: 428141442377829804, guid: d8956d67d35228947a16e221fc96a494, type: 3}
+  - CamelloRosa: {fileID: 5861835086589297460, guid: feda263a519097043be070ee147b9e05, type: 3}
+  - CamelloVerde: {fileID: 3362246981572760179, guid: e03c62d92e487d442b34a95a9fbdf0de, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

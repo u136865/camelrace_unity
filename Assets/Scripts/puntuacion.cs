@@ -5,18 +5,18 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class Puntuacion : MonoBehaviour
 {
-    public TMP_Text puntos, pt1, pt2, pt3, textTiempo, textTiempoFinal;
+    public TMP_Text textTiempo, textTiempoFinal, player1, player2, player3, player4, player5;
     public int total, punt1, punt2, punt3, totalMovimientoCamello;
     public int multiplicadorCamello = 3;
-    public RectTransform[] camellos;
-    RectTransform camello;
-    public GameObject pantallaWin;
+    public GameObject pantallaWin, pantallaInicio;
+    public Button botonSalaEspera;
     public float tiempoMovimiento = 10;
     float segundosTiempo = 0, camelloMovimiento = 450; //El camello va del 450 de x al -450 de x para llegar a la meta   
-    float players;
+    
     int minutosTiempo = 0;
     //int horasTiempo = 0;
 
@@ -27,60 +27,47 @@ public class Puntuacion : MonoBehaviour
 
     void Start()
     {
-        puntos.GetComponent<TextMeshProUGUI>().text = "0";
-        players = PhotonNetwork.CurrentRoom.PlayerCount;//Miramos a ver cuántos players hay en la sala
-        AsignarCamello();//asignamos el camello dependiendo el número de players
-        view = transform.GetComponent<PhotonView>();
-        bola = GameObject.Find("Player(Clone)").GetComponent<Bola>();
+        Time.timeScale = 0;
+        view = GetComponent<PhotonView>();
+
+        if (PhotonNetwork.IsMasterClient)
+            botonSalaEspera.interactable = true;
+
     }
 
     private void Update()
     {
+        ConexionPlayers();
+        
         TiempoJuego();
         if (view.IsMine) //Comprobamos que es nuestro el player
         {
             MoverCamello();
-            puntos.GetComponent<TextMeshProUGUI>().text = total.ToString();
-            pt1.GetComponent<TextMeshProUGUI>().text = punt1.ToString();
-            pt2.GetComponent<TextMeshProUGUI>().text = punt2.ToString();
-            pt3.GetComponent<TextMeshProUGUI>().text = punt3.ToString();
-            camello.localPosition = Vector3.Lerp(camello.localPosition, new Vector3(camelloMovimiento, camello.localPosition.y, camello.localPosition.z), tiempoMovimiento);
+            GameObject.Find("puntos(Clone)").GetComponent<TextMeshProUGUI>().text = total.ToString();
+            GameObject.Find("1pt_value(Clone)").GetComponent<TextMeshProUGUI>().text = punt1.ToString();
+            GameObject.Find("2pt_value(Clone)").GetComponent<TextMeshProUGUI>().text = punt2.ToString();
+            GameObject.Find("3pt_value(Clone)").GetComponent<TextMeshProUGUI>().text = punt3.ToString();
+            GameObject.Find("Camello").GetComponent<RectTransform>().localPosition = Vector3.Lerp(GameObject.Find("Camello").GetComponent<RectTransform>().localPosition, new Vector3(camelloMovimiento, GameObject.Find("Camello").GetComponent<RectTransform>().localPosition.y, GameObject.Find("Camello").GetComponent<RectTransform>().localPosition.z), tiempoMovimiento);
         }        
     }
-    void AsignarCamello()
+
+    private void ConexionPlayers()
     {
-        switch (players)
-        {
-            case 0:
-                camello = camellos[0];
-                break;
-            case 1:
-                camello = camellos[1];
-                break;
-            case 2:
-                camello = camellos[2];
-                break;
-            case 3:
-                camello = camellos[3];
-                break;
-            case 4:
-                camello = camellos[4];
-                break;
-            default:
-                break;
-        }
+        int players = PhotonNetwork.CurrentRoom.PlayerCount;
+        player1.GetComponent<TextMeshProUGUI>().text = "Player 1 Connected";
+        if (players == 2) player2.GetComponent<TextMeshProUGUI>().text = "Player 2 Connected";
+        if (players == 3) player3.GetComponent<TextMeshProUGUI>().text = "Player 3 Connected";
+        if (players == 4) player4.GetComponent<TextMeshProUGUI>().text = "Player 4 Connected";
+        if (players == 5) player5.GetComponent<TextMeshProUGUI>().text = "Player 5 Connected";
     }
 
     void TiempoJuego()
     {
-        if (view.IsMine) //Comprobamos que es nuestro el player
-        {
-            segundosTiempo += Time.deltaTime;
-            minutosTiempo = (int)segundosTiempo / 60;
-            // horasTiempo = (int)segundosTiempo / 3600;
-            //UI Text refresh
-            textTiempo.text = string.Format("{0}:{1}", minutosTiempo.ToString("00"), ((int)segundosTiempo % 60).ToString("00"));//{0}:{1}:{2} horasTiempo.ToString("00"),
-        }
+        segundosTiempo += Time.deltaTime;
+        minutosTiempo = (int)segundosTiempo / 60;
+        // horasTiempo = (int)segundosTiempo / 3600;
+        //UI Text refresh
+        textTiempo.text = string.Format("{0}:{1}", minutosTiempo.ToString("00"), ((int)segundosTiempo % 60).ToString("00"));//{0}:{1}:{2} horasTiempo.ToString("00"),
     }
 
     public void MeterPuntos(int punto)
@@ -99,7 +86,8 @@ public class Puntuacion : MonoBehaviour
     }
     public void BotonBola()
     {
-       bola.Reiniciar();   
+        bola = GameObject.Find("Bola").GetComponent<Bola>();
+        bola.Reiniciar();   
     }
 
     void MoverCamello()
@@ -121,5 +109,21 @@ public class Puntuacion : MonoBehaviour
         textTiempoFinal.text = textTiempo.text;
         Debug.Log("¡VICTORIA!");
         pantallaWin.SetActive(true);
+    }
+
+    void ResetPositions(GameObject pepito)
+    {
+        pepito.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(0f, 0f, 0f);
+        pepito.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 0f);
+        pepito.GetComponent<RectTransform>().localPosition = new Vector3(0f, 0f, 0f);
+        pepito.GetComponent<RectTransform>().position = new Vector3(0f, 0f, 0f);
+        pepito.transform.position = new Vector3(0f, 0f, 0f);
+        pepito.transform.localPosition = new Vector3(0f, 0f, 0f);
+    }   
+
+    public void ComenzarPartida()
+    {
+        pantallaInicio.SetActive(false);
+        Time.timeScale = 1;
     }
 }

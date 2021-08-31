@@ -31,7 +31,7 @@ public class Bola : MonoBehaviour
         _bola = transform.GetComponent<Rigidbody>();
         view = GetComponent<PhotonView>();
         inicio = GameObject.Find("inicio").transform;
-        puntuacion = GameObject.Find("IU(Clone)").GetComponent<Puntuacion>();
+        puntuacion = GameObject.Find("IU").GetComponent<Puntuacion>();
     }
 
     void Update()
